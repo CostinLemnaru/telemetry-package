@@ -1,0 +1,16 @@
+{
+  "name": "costin/telemetry",
+  "description": "Telemetry Package",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Telemetry\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10"
+  }
+}
