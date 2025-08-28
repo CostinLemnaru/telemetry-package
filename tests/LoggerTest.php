@@ -2,9 +2,10 @@
 
 namespace Tests;
 
-use PHPUnit\Framework\TestCase;
 use Telemetry\Logger;
+use PHPUnit\Framework\TestCase;
 use Telemetry\Drivers\CliDriver;
+use Telemetry\Drivers\JsonFileDriver;
 use Telemetry\Drivers\DriverInterface;
 
 class LoggerTest extends TestCase {
@@ -71,5 +72,31 @@ class LoggerTest extends TestCase {
         $this->expectOutputRegex('/"source":"api"/');
 
         $logger->error("server error", $tags);
+    }
+
+    public function testWritesLogToJsonFile()
+    {
+        $file = __DIR__ . '/JsonFIleDriverLogs.json';
+
+        $jsonDriver = new JsonFileDriver($file);
+
+        $logger = new Logger([$jsonDriver]);
+
+        $tags = [
+            'id' => 100320,
+            'source' => 'api'
+        ];
+        $logger->info('Testing JSON Driver', $tags);
+
+        $this->assertFileExists($file);
+
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $this->assertNotEmpty($lines, 'Fișierul ar trebui să conțină cel puțin o linie.');
+        $lastLog = json_decode(array_pop($lines), true);
+
+        $this->assertSame(DriverInterface::INFO, $lastLog['level']);
+        $this->assertSame('Testing JSON Driver', $lastLog['message']);
+        $this->assertSame($tags, $lastLog['tags']);
+        $this->assertNotEmpty($lastLog['timestamp']);
     }
 }
