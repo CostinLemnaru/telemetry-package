@@ -1,10 +1,10 @@
 <?php
+
 namespace Telemetry;
 
 use Telemetry\Drivers\DriverInterface;
 
 class Logger {
-    
     /** @var DriverInterface[] */
     private array $drivers = [];
 

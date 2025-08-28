@@ -1,2 +1,1 @@
-{"timestamp":{"date":"2025-08-28 11:13:39.462401","timezone_type":3,"timezone":"UTC"},"level":"info","message":"Testing JSON Driver","tags":{"id":100320,"source":"api"}}
-{"timestamp":{"date":"2025-08-28 11:13:55.582527","timezone_type":3,"timezone":"UTC"},"level":"info","message":"Testing JSON Driver","tags":{"id":100320,"source":"api"}}
+{"timestamp":{"date":"2025-08-28 11:33:26.234062","timezone_type":3,"timezone":"UTC"},"level":"info","message":"Multidriver message","tags":[]}
