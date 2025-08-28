@@ -159,4 +159,34 @@ class LoggerTest extends TestCase {
         $lastText = array_pop($textLines);
         $this->assertStringContainsString('Multidriver message', $lastText);
     }
+
+    public function testLogTransactions()
+    {
+        $logger = new Logger([new CliDriver()]);
+
+        $transactionId = 100;
+        $transactionAttrs = [
+            'customerId' => 42,
+            'origin' => 'api'
+        ];
+
+        $logger->beginTransaction($transactionId, $transactionAttrs);
+
+        $this->expectOutputRegex('/Logging with transaction attributes/');
+
+        $this->expectOutputRegex('/"transactionId":"100"/');
+        $this->expectOutputRegex('/"customerId":42/');
+        $this->expectOutputRegex('/"origin":"api"/');
+        $this->expectOutputRegex('/"orderId":555/');
+
+        $this->expectOutputRegex('/Warning loggin transaction/');
+        $this->expectOutputRegex('/"transactionId":"100"/');
+        $this->expectOutputRegex('/"customerId":42/');
+        $this->expectOutputRegex('/"origin":"api"/');
+
+        $logger->info('Logging with transaction attributes', ['orderId' => 555]);
+        $logger->warning('Warning loggin transaction');
+
+        $logger->endTransaction();
+    }
 }
